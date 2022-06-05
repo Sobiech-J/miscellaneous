@@ -53,25 +53,36 @@ successful_input = False
 options = {
 	"title": 0,
 	"subtitle": 0,
-	"author": 0
+	"author": 0,
+	"php": 0
 }
 
 while successful_input == False:
-	option_input = input("Select the option you would like:" + newline_character + "1) default (Only title on top line is stylized)" + newline_character + "2) custom" + newline_character)
+	option_input = input("Select the option you would like:" + newline_character + "1) default (Only title on top line is stylized). Create full page." + newline_character + "2) Assumes there is a php header and footer. Otherwise mirrors option 1." + newline_character + "3) custom" + newline_character)
 
 	if option_input == str(1):
 		options = {
 			"title": 1,
 			"subtitle": 0,
-			"author": 0
+			"author": 0,
+			"php": 0
 		}
 		successful_input = True
 	elif option_input == str(2):
+		options = {
+			"title": 1,
+			"subtitle": 0,
+			"author": 0,
+			"php": 1
+		}
+		successful_input = True
+	elif option_input == str(3):
 		# TODO create checks to make sure numbers entered are not the same
 		try:
 			options["title"] = int(input("Enter what number paragraph of the document contains the title. Enter 0 to skip this option."))
 			options["subtitle"] = int(input("Enter what number paragraph of the document contains the subtitle. Enter 0 to skip this option."))
 			options["author"] = int(input("Enter what number paragraph of the document contains the author name. Enter 0 to skip this option."))
+			options["php"] = int(input("Is this a static HTML page or will it be used with PHP headers and footers? 0 for static page, 1 for PHP."))
 			successful_input = True
 		except:
 			print("Paragraph number must be entered as a number" + newline_character)
@@ -84,37 +95,44 @@ while successful_input == False:
 #open file to write to
 new_file_writer = open(new_filename, "w")
 
-#preliminaries
-new_file_writer.write("<!DOCTYPE html>" + newline_character)
-new_file_writer.write("<html>" + newline_character)
 
-# head info
-new_file_writer.write('\t' + "<head>" + newline_character)
-new_file_writer.write('\t\t' + "<meta charset=\"utf-8\">" + newline_character)
-new_file_writer.write('\t\t' + "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">" + newline_character)
+############# Start of header if that html needs to be included / no PHP ##############
 
-# find title and make it the page title
-i = 0
-j = 1
-while i < len(contents_list):
-	if contents_list[i] == "":
-		i += 1
-		continue
-	elif j == options["title"]:
-		new_file_writer.write('\t\t' + "<title>" + contents_list[i] + "</title>" + newline_character)
-		break
-	else:
-		i += 1
-		j += 1
+if options["php"] == 0:
 
-#if you want to add a stylesheet. Replace articles.css with stylesheet name
-#new_file_writer.write('\t\t' + "<link rel=\"stylesheet\" href=\"articles.css\">" + newline_character)
+	#preliminaries
+	new_file_writer.write("<!DOCTYPE html>" + newline_character)
+	new_file_writer.write("<html>" + newline_character)
 
-new_file_writer.write('\t' + "</head>" + newline_character)
+	# head info
+	new_file_writer.write('\t' + "<head>" + newline_character)
+	new_file_writer.write('\t\t' + "<meta charset=\"utf-8\">" + newline_character)
+	new_file_writer.write('\t\t' + "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">" + newline_character)
+
+	# find title and make it the page title
+	i = 0
+	j = 1
+	while i < len(contents_list):
+		if contents_list[i] == "":
+			i += 1
+			continue
+		elif j == options["title"]:
+			new_file_writer.write('\t\t' + "<title>" + contents_list[i] + "</title>" + newline_character)
+			break
+		else:
+			i += 1
+			j += 1
+
+	#if you want to add a stylesheet. Replace articles.css with stylesheet name
+	#new_file_writer.write('\t\t' + "<link rel=\"stylesheet\" href=\"articles.css\">" + newline_character)
+
+	new_file_writer.write('\t' + "</head>" + newline_character)
 
 
-# body info/ the actual HTML being changed
-new_file_writer.write('\t' + "<body>" + newline_character)
+	# body info/ the actual HTML being changed
+	new_file_writer.write('\t' + "<body>" + newline_character)
+
+########### End of header if that html needs to be included / no PHP ##################
 
 # is the line of the file being read in
 i = 0
@@ -154,9 +172,12 @@ while i < len(contents_list):
 		j += 1
 
 
-# close preliminaries
-new_file_writer.write('\t' + "</body>" + newline_character)
-new_file_writer.write("</html>" + newline_character)
+############################ No PHP/ add footer starts ########################################
+if options["php"] == 0:
+	# close preliminaries
+	new_file_writer.write('\t' + "</body>" + newline_character)
+	new_file_writer.write("</html>" + newline_character)
+############################ No PHP/ add footer ends ##########################################
 
 # close file writer
 new_file_writer.close()
