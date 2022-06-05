@@ -13,7 +13,7 @@ try:
 		sys.exit()
 	new_filename = sys.argv[2]
 	split_new_filename = new_filename.split(".")
-	if split_new_filename != "html":
+	if split_new_filename[-1] != "html":
 		print("A non-html file was entered as output. Please enter the name of the new HTML document as the second argument with the file name ending in '.html'")
 		sys.exit()
 except:
@@ -36,15 +36,8 @@ except:
 	contents_list = contents.split('\r\n')
 	newline_character = '\r\n'
 
-# to print contents of file
-#print(contents.read())
-
-print(contents_list)
-
 #open file to write to
-
 new_file_writer = open(new_filename, "w")
-#new_file_writer.write()
 
 #preliminaries
 new_file_writer.write("<!DOCTYPE html>" + newline_character)
