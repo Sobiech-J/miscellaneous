@@ -74,7 +74,7 @@ while successful_input == False:
 			options["author"] = int(input("Enter what number paragraph of the document contains the author name. Enter 0 to skip this option."))
 			successful_input = True
 		except:
-			print("Paragraph number must be entered as a number")
+			print("Paragraph number must be entered as a number" + newline_character)
 	else:
 		print("Please enter the number of the option you would like")
 
