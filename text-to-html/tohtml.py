@@ -2,7 +2,7 @@
 
 import sys
 
-#system call of sys.argv[0] will accept an argument that will be used as filename
+##################### Checking entered filenames #######################################
 
 try:
 	filename = sys.argv[1]
@@ -20,7 +20,17 @@ except:
 	print("This script must be run with 2 arguments.\n1: the filename of the system to be read from.\n2: the name of the file that the resulting html will be placed in.")
 	sys.exit()
 
-unread_contents = open(filename, "r")
+try:
+	unread_contents = open(filename, "r")
+except:
+	print(filename + " was not found. Exiting...")
+	sys.exit()
+
+######################## End of checking filenames ####################################
+######################## Start of selecting options of HTML format ####################
+
+######################## End of selecting options of HTML format ######################
+######################## Start of reading first file ##################################
 
 contents = unread_contents.read()
 
@@ -36,6 +46,9 @@ except:
 	contents_list = contents.split('\r\n')
 	newline_character = '\r\n'
 
+######################### End of reading first file ###################################
+######################### Start of writing HTML to second file ########################
+
 #open file to write to
 new_file_writer = open(new_filename, "w")
 
@@ -45,7 +58,7 @@ new_file_writer.write("<html>" + newline_character)
 
 # head info
 new_file_writer.write('\t' + "<head>" + newline_character)
-new_file_writer.write('\t\t' + "<meta charset="utf-8">" + newline_character)
+new_file_writer.write('\t\t' + "<meta charset=\"utf-8\">" + newline_character)
 new_file_writer.write('\t\t' + "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">" + newline_character)
 
 # find first line of text and make it the page title
@@ -101,3 +114,5 @@ new_file_writer.write("</html>" + newline_character)
 
 # close file writer
 new_file_writer.close()
+
+############################ End of writting HTML to second file #############################
