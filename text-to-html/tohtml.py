@@ -58,7 +58,7 @@ while i < len(contents_list):
 		break
 
 #if you want to add a stylesheet. Replace articles.css with stylesheet name
-new_file_writer.write('\t\t' + "<link rel=\"stylesheet\" href=\"articles.css\">" + newline_character)
+#new_file_writer.write('\t\t' + "<link rel=\"stylesheet\" href=\"articles.css\">" + newline_character)
 
 new_file_writer.write('\t' + "</head>" + newline_character)
 
