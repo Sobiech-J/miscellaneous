@@ -1,6 +1,7 @@
 #!/bin/python3
 
 import sys
+import platform
 
 ##################### Checking entered filenames #######################################
 
@@ -26,6 +27,7 @@ except:
 	print(filename + " was not found. Exiting...")
 	sys.exit()
 
+
 ######################## End of checking filenames ####################################
 ######################## Start of selecting options of HTML format ####################
 
@@ -38,6 +40,18 @@ contents_list = []
 
 newline_character = '\n'
 
+if platform.system() == "Linux" or platform.system() == "Darwin":
+	print("Unix")
+	contents_list = contents.split('\n')
+elif platform.system() == "Windows":
+	print("Windows")
+	contents_list = contents.split('\r\n')
+	newline_character = '\r\n'
+else:
+	print("Could not identify OS. Exiting...")
+	sys.exit()
+
+"""
 #for unix
 try:
 	contents_list = contents.split('\n')
@@ -45,6 +59,7 @@ try:
 except:
 	contents_list = contents.split('\r\n')
 	newline_character = '\r\n'
+"""
 
 ######################### End of reading first file ###################################
 ######################### Start of writing HTML to second file ########################
