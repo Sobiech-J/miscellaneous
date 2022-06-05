@@ -45,6 +45,7 @@ new_file_writer.write("<html>" + newline_character)
 
 # head info
 new_file_writer.write('\t' + "<head>" + newline_character)
+new_file_writer.write('\t\t' + "<meta charset="utf-8">" + newline_character)
 new_file_writer.write('\t\t' + "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">" + newline_character)
 
 # find first line of text and make it the page title
