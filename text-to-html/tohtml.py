@@ -29,9 +29,6 @@ except:
 
 
 ######################## End of checking filenames ####################################
-######################## Start of selecting options of HTML format ####################
-
-######################## End of selecting options of HTML format ######################
 ######################## Start of reading first file ##################################
 
 contents = unread_contents.read()
@@ -41,27 +38,47 @@ contents_list = []
 newline_character = '\n'
 
 if platform.system() == "Linux" or platform.system() == "Darwin":
-	print("Unix")
 	contents_list = contents.split('\n')
 elif platform.system() == "Windows":
-	print("Windows")
 	contents_list = contents.split('\r\n')
 	newline_character = '\r\n'
 else:
 	print("Could not identify OS. Exiting...")
 	sys.exit()
 
-"""
-#for unix
-try:
-	contents_list = contents.split('\n')
-#for windows
-except:
-	contents_list = contents.split('\r\n')
-	newline_character = '\r\n'
-"""
-
 ######################### End of reading first file ###################################
+######################## Start of selecting options of HTML format ####################
+
+successful_input = False
+options = {
+	"title": 0,
+	"subtitle": 0,
+	"author": 0
+}
+
+while successful_input == False:
+	option_input = input("Select the option you would like:" + newline_character + "1) default (Only title on top line is stylized)" + newline_character + "2) custom" + newline_character)
+
+	if option_input == str(1):
+		options = {
+			"title": 1,
+			"subtitle": 0,
+			"author": 0
+		}
+		successful_input = True
+	elif option_input == str(2):
+		# TODO create checks to make sure numbers entered are not the same
+		try:
+			options["title"] = int(input("Enter what number paragraph of the document contains the title. Enter 0 to skip this option."))
+			options["subtitle"] = int(input("Enter what number paragraph of the document contains the subtitle. Enter 0 to skip this option."))
+			options["author"] = int(input("Enter what number paragraph of the document contains the author name. Enter 0 to skip this option."))
+			successful_input = True
+		except:
+			print("Paragraph number must be entered as a number")
+	else:
+		print("Please enter the number of the option you would like")
+
+######################## End of selecting options of HTML format ######################
 ######################### Start of writing HTML to second file ########################
 
 #open file to write to
@@ -76,15 +93,19 @@ new_file_writer.write('\t' + "<head>" + newline_character)
 new_file_writer.write('\t\t' + "<meta charset=\"utf-8\">" + newline_character)
 new_file_writer.write('\t\t' + "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">" + newline_character)
 
-# find first line of text and make it the page title
+# find title and make it the page title
 i = 0
+j = 1
 while i < len(contents_list):
 	if contents_list[i] == "":
 		i += 1
 		continue
-	else:
+	elif j == options["title"]:
 		new_file_writer.write('\t\t' + "<title>" + contents_list[i] + "</title>" + newline_character)
 		break
+	else:
+		i += 1
+		j += 1
 
 #if you want to add a stylesheet. Replace articles.css with stylesheet name
 #new_file_writer.write('\t\t' + "<link rel=\"stylesheet\" href=\"articles.css\">" + newline_character)
@@ -111,8 +132,18 @@ while i < len(contents_list):
 		i += 1
 		continue
 	# creates header/ title. Consider wrapping in a <header> tag
-	if j == 1:
+	if j == options["title"]:
 		new_file_writer.write("\t\t<h1>" + contents_list[i] + "</h1>" )
+		new_file_writer.write(newline_character)
+		i += 1
+		j += 1
+	elif j == options["subtitle"]:
+		new_file_writer.write("\t\t<h2>" + contents_list[i] + "</h2>" )
+		new_file_writer.write(newline_character)
+		i += 1
+		j += 1
+	elif j == options["author"]:
+		new_file_writer.write("\t\t<h5>" + contents_list[i] + "</h5>" )
 		new_file_writer.write(newline_character)
 		i += 1
 		j += 1
