@@ -102,7 +102,7 @@ if options["php"] == 0:
 
 	#preliminaries
 	new_file_writer.write("<!DOCTYPE html>" + newline_character)
-	new_file_writer.write("<html>" + newline_character)
+	new_file_writer.write("<html lang=en>" + newline_character)
 
 	# head info
 	new_file_writer.write('\t' + "<head>" + newline_character)
